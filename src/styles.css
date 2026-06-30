@@ -1,0 +1,139 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   Set2Close — Appointment Triage Board styles
+   Brand: deep blue #0C447C · accent #378ADD · white. Clean, lots of whitespace.
+   ───────────────────────────────────────────────────────────────────────── */
+:root {
+  --s2c-blue: #0C447C;
+  --s2c-accent: #378ADD;
+  --ink: #1f2a37;
+  --muted: #64748b;
+  --line: #e6eaf0;
+  --bg: #f5f7fb;
+  --card-radius: 12px;
+  --slot-h: 92px;
+  --gutter-w: 76px;
+  --lane-min: 196px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; margin: 0; }
+body { background: var(--bg); color: var(--ink); }
+
+.board { height: 100%; display: flex; flex-direction: column; }
+
+/* ── Top bar ── */
+.topbar {
+  display: flex; align-items: center; gap: 24px;
+  padding: 16px 22px; background: #fff; border-bottom: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+.topbar__left { display: flex; align-items: center; gap: 12px; }
+.topbar__title { font-size: 18px; font-weight: 700; color: var(--s2c-blue); margin: 0; }
+.srcbadge {
+  font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 999px;
+  letter-spacing: .02em;
+}
+.srcbadge--live { background: #E7F6F1; color: #0E7C6B; }
+.srcbadge--seed { background: #eef1f6; color: var(--muted); }
+
+.datestep { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+.datestep button {
+  width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--line);
+  background: #fff; color: var(--s2c-blue); font-size: 18px; cursor: pointer; line-height: 1;
+}
+.datestep button:hover { border-color: var(--s2c-accent); }
+.datestep__label { font-weight: 600; min-width: 190px; text-align: center; }
+
+.legend { display: flex; gap: 8px; margin-left: 16px; flex-wrap: wrap; }
+
+/* ── Grid ── */
+.gridscroll { flex: 1; overflow: auto; padding: 18px 22px 28px; }
+.grid {
+  display: grid;
+  grid-template-columns: var(--gutter-w) repeat(var(--lane-count), minmax(var(--lane-min), 1fr));
+  gap: 12px; min-width: max-content;
+}
+
+/* time gutter */
+.gutter__head { height: 44px; }
+.gutter__cell {
+  height: var(--slot-h); display: flex; align-items: flex-start; justify-content: flex-end;
+  padding-top: 6px; padding-right: 8px; font-size: 12px; color: var(--muted);
+  border-top: 1px solid var(--line);
+}
+
+/* estimator columns */
+.lane { display: flex; flex-direction: column; border-radius: 14px; transition: background .12s ease; }
+.lane__head {
+  height: 44px; display: flex; align-items: center; gap: 8px; padding: 0 12px;
+  position: sticky; top: 0; z-index: 2;
+  background: #fff; border: 1px solid var(--line); border-radius: 10px; margin-bottom: 4px;
+}
+.lane__dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); }
+.lane__name { font-weight: 700; color: var(--ink); }
+.lane__count {
+  margin-left: auto; font-size: 12px; font-weight: 600; color: var(--muted);
+  background: #f1f4f9; border-radius: 999px; padding: 2px 8px;
+}
+.lane--placeholder .lane__head {
+  background: #fbfcfe; border-style: dashed;
+}
+.lane__body { display: flex; flex-direction: column; }
+.slot {
+  height: var(--slot-h); border-top: 1px solid var(--line);
+  padding: 6px 6px 0; display: flex; flex-direction: column; gap: 6px;
+}
+.lane--over { background: rgba(55, 138, 221, 0.08); }
+.lane--over .slot { border-top-color: rgba(55, 138, 221, 0.35); }
+
+/* ── Card ── */
+.card {
+  --accent: var(--muted);
+  position: relative; background: #fff; border: 1px solid var(--line);
+  border-left: 4px solid var(--accent); border-radius: var(--card-radius);
+  padding: 8px 10px; cursor: grab; box-shadow: 0 1px 2px rgba(16,28,51,.04);
+  user-select: none; transition: box-shadow .12s ease, transform .04s ease;
+}
+.card:hover { box-shadow: 0 4px 14px rgba(16,28,51,.10); }
+.card:active { cursor: grabbing; }
+.card--unassigned { border-style: dashed; border-left-style: solid; background: #fbfcfe; }
+.card--record { box-shadow: 0 0 0 2px var(--s2c-accent); }
+.card--ghost { opacity: .35; }
+.card__triage {
+  position: absolute; top: -8px; right: 8px; font-size: 10px; font-weight: 700;
+  color: #fff; background: var(--s2c-accent); padding: 2px 7px; border-radius: 999px;
+  letter-spacing: .03em;
+}
+.card__name { font-weight: 700; font-size: 13px; line-height: 1.2; }
+.card__addr { font-size: 12px; color: var(--muted); margin-top: 2px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card__meta { display: flex; align-items: center; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+.card__zip { font-size: 11px; color: var(--muted); }
+
+.tag { font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 999px; white-space: nowrap; }
+
+/* ── Side panel ── */
+.scrim { position: fixed; inset: 0; background: rgba(15,23,42,.28); z-index: 20; }
+.panel {
+  position: fixed; top: 0; right: 0; height: 100%; width: 360px; max-width: 88vw;
+  background: #fff; border-left: 1px solid var(--line); box-shadow: -8px 0 30px rgba(16,28,51,.12);
+  z-index: 21; padding: 22px 22px 26px; overflow: auto;
+}
+.panel__close {
+  position: absolute; top: 14px; right: 14px; width: 30px; height: 30px;
+  border: none; background: #f1f4f9; border-radius: 8px; font-size: 18px; cursor: pointer; color: var(--muted);
+}
+.panel__name { font-size: 18px; font-weight: 700; color: var(--s2c-blue); margin-bottom: 8px; padding-right: 30px; }
+.panel__grid { display: grid; grid-template-columns: 92px 1fr; gap: 12px 14px; margin: 20px 0 18px; }
+.panel__grid dt { font-size: 12px; font-weight: 600; color: var(--muted); }
+.panel__grid dd { margin: 0; font-size: 13px; line-height: 1.4; }
+.panel__hint { font-size: 12px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 14px; }
+
+/* ── Toast ── */
+.toast {
+  position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%);
+  background: var(--s2c-blue); color: #fff; font-weight: 600; font-size: 13px;
+  padding: 10px 18px; border-radius: 999px; box-shadow: 0 8px 22px rgba(12,68,124,.35);
+  z-index: 30;
+}
